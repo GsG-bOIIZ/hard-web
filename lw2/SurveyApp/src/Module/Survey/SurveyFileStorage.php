@@ -45,13 +45,11 @@ class SurveyFileStorage
         return new Survey(null, null, null, null);         
     }
 
-    public static function saveSurveyToFile(Survey $survey): void
+    public static function saveSurveyToFile(Survey $survey): string
     {        
         if (!$survey->getEmail())
         {
-            echo "Impossible email (for save Survey to file) ";
-            echo "Survey don't saved";
-            return;
+            return "Survey don't saved<br>Impossible email (for save Survey to file)";
         }
 
         $fileName = self::createFileName($survey->getEmail());
@@ -76,7 +74,7 @@ class SurveyFileStorage
                 $tempArray[3] = $tempAge . $survey->getAge();
             }
             file_put_contents($fileName, $tempArray);
-            echo "Survey updated";
+            return "Survey updated";
         }
         else
         {
@@ -90,7 +88,7 @@ class SurveyFileStorage
             fwrite($surveyTxt, $tempLastName . $survey->getLastName() . PHP_EOL);            
             fwrite($surveyTxt, $tempAge . $survey->getAge());
             fclose($surveyTxt);
-            echo "Survey saved"; 
+            return "Survey saved"; 
         }
         
     }   

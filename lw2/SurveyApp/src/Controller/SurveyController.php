@@ -2,35 +2,36 @@
 
 namespace App\Controller;
 
-use App\Service\Survey\SurveyInterface;
+use App\Service\Survey\SurveyServiceInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 
 
 class SurveyController extends AbstractController
 {
-    public function saveSurvey(SurveyInterface $surveyServices): Response
+    public function saveSurvey(SurveyServiceInterface $surveyServices): Response
     {
-        $values = $surveyServices->saveData();
+        $tempArray = $surveyServices->saveData();
         return $this->render('upload.html.twig',
             [
-                'firstName' => $values['firstName'],
-                'lastName' => $values['lastName'],
-                'age' => $values['age'],
-                'email' => $values['email'],
+                'alert' => $tempArray['alert'],
+                'firstName' => $tempArray['firstName'],
+                'lastName' => $tempArray['lastName'],
+                'age' => $tempArray['age'],
+                'email' => $tempArray['email']
             ]
         );
     }
 
-    public function viewSurvey(SurveyInterface $surveyServices): Response
+    public function viewSurvey(SurveyServiceInterface $surveyServices): Response
     {
-        $values = $surveyServices->viewData();
+        $tempArray = $surveyServices->viewData();
         return $this->render('load.html.twig',
             [
-                'fileFirstName' => $values['fileFirstName'],
-                'fileLastName' => $values['fileLastName'],
-                'fileAge' => $values['fileAge'],
-                'fileEmail' => $values['fileEmail']
+                'fileFirstName' => $tempArray['fileFirstName'],
+                'fileLastName' => $tempArray['fileLastName'],
+                'fileAge' => $tempArray['fileAge'],
+                'fileEmail' => $tempArray['fileEmail']
             ]
         );
     }
