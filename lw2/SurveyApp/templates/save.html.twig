@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Текущие значения</title>
+    </head>
+    <body>
+        <p>{{ data.alert }}</p>
+        {% if data.survey.email == null or data.survey.email == '' %}
+            <p>Imposible email</p>
+        {% else %}
+            <p>Email: {{ data.survey.email }}</p>
+            <p>First Name: {{ data.survey.firstName }}</p>
+            <p>Last Name: {{ data.survey.lastName }}</p>
+            <p>Age: {{ data.survey.age }}</p>
+        {% endif %}
+    </body>
+</html>

@@ -13,7 +13,6 @@ class RequestSurveyLoader
     {
         if (!isset($_GET[self::GET_EMAIL])) 
         {
-            echo PHP_EOL . "Impossible email (for create Survey)" . PHP_EOL . PHP_EOL;
             return new Survey(null, null, null, null);
         }
         $email = $_GET[self::GET_EMAIL];

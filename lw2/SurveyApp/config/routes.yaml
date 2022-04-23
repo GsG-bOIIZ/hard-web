@@ -2,6 +2,6 @@ save_survey:
   path: /save-survey
   controller: App\Controller\SurveyController::saveSurvey
   
-print_survey:
+view_survey:
   path: /view-survey
   controller: App\Controller\SurveyController::viewSurvey

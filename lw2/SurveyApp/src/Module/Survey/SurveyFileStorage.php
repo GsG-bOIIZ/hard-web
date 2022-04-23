@@ -5,11 +5,11 @@ namespace App\Module\Survey;
 class SurveyFileStorage
 {
     private const FOLDER_DATA = './data/';
-    private const FILE_FIRST_NAME = "First Name";
-    private const FILE_LAST_NAME = "Last Name";
-    private const FILE_EMAIL = "Email";
-    private const FILE_AGE = "Age";
-    private const DELIMETER_PARAMETERS = ": ";
+    private const FILE_FIRST_NAME = 'First Name';
+    private const FILE_LAST_NAME = 'Last Name';
+    private const FILE_EMAIL = 'Email';
+    private const FILE_AGE = 'Age';
+    private const DELIMETER_PARAMETERS = ': ';
 
     private static function createFileName(?string $email): string
     {
@@ -19,29 +19,22 @@ class SurveyFileStorage
     public static function loadSurveyFromFile(?string $email): Survey
     {
         $fileName = self::createFileName($email);
-        if ((!$email || $email !== ''))
+        if ((!$email || $email !== '') && file_exists($fileName))
         {
-            if (file_exists($fileName))
+            $tempArray = file($fileName);
+            $arrayData = [];
+            foreach ($tempArray as $line)
             {
-                $tempArray = file($fileName);
-                $arrayData = [];
-                foreach ($tempArray as $line)
-                {
-                    $tempString = explode(self::DELIMETER_PARAMETERS, $line);
-                    $arrayData[$tempString[0]] = trim($tempString[1]) ?? null;
-                }
-                return new Survey(
-                    $arrayData[self::FILE_EMAIL], 
-                    $arrayData[self::FILE_FIRST_NAME], 
-                    $arrayData[self::FILE_LAST_NAME], 
-                    $arrayData[self::FILE_AGE]
-                );
+                $tempString = explode(self::DELIMETER_PARAMETERS, $line);
+                $arrayData[$tempString[0]] = trim($tempString[1]) ?? null;
             }
-            echo "File not found";
-            return new Survey(null, null, null, null);             
-        }  
-
-        echo "Impossible email (for load Survey from file)";
+            return new Survey(
+                $arrayData[self::FILE_EMAIL], 
+                $arrayData[self::FILE_FIRST_NAME], 
+                $arrayData[self::FILE_LAST_NAME], 
+                $arrayData[self::FILE_AGE]
+            );
+        }
         return new Survey(null, null, null, null);         
     }
 
@@ -49,7 +42,7 @@ class SurveyFileStorage
     {        
         if (!$survey->getEmail())
         {
-            return "Survey don't saved<br>Impossible email (for save Survey to file)";
+            return "Survey don't saved";
         }
 
         $fileName = self::createFileName($survey->getEmail());
@@ -61,20 +54,20 @@ class SurveyFileStorage
         if (file_exists($fileName))
         {
             $tempArray = file($fileName);
-            if ($survey->getFirstName() !== null)
+            if (!($survey->getFirstName() === null))
             {
-                $tempArray[1] = $tempFirstName . $survey->getFirstName();
+                $tempArray[1] = $tempFirstName . $survey->getFirstName() . "\n";
             }
-            if ($survey->getLastName() !== null)
+            if (!($survey->getLastName() === null))
             {
-                $tempArray[2] = $tempLastName . $survey->getLastName();
+                $tempArray[2] = $tempLastName . $survey->getLastName() . "\n";
             }
-            if ($survey->getAge() !== null)
+            if (!($survey->getAge() === null))
             {
                 $tempArray[3] = $tempAge . $survey->getAge();
             }
             file_put_contents($fileName, $tempArray);
-            return "Survey updated";
+            return 'Survey updated';
         }
         else
         {
@@ -83,12 +76,12 @@ class SurveyFileStorage
                 mkdir(self::FOLDER_DATA);
             }
             $surveyTxt = fopen($fileName, "w");
-            fwrite($surveyTxt, $tempEmail . $survey->getEmail() . PHP_EOL);
-            fwrite($surveyTxt, $tempFirstName . $survey->getFirstName() . PHP_EOL);
-            fwrite($surveyTxt, $tempLastName . $survey->getLastName() . PHP_EOL);            
+            fwrite($surveyTxt, $tempEmail . $survey->getEmail() . "\n");
+            fwrite($surveyTxt, $tempFirstName . $survey->getFirstName() . "\n");
+            fwrite($surveyTxt, $tempLastName . $survey->getLastName() . "\n");            
             fwrite($surveyTxt, $tempAge . $survey->getAge());
             fclose($surveyTxt);
-            return "Survey saved"; 
+            return 'Survey saved'; 
         }
         
     }   

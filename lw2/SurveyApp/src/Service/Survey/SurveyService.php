@@ -4,13 +4,14 @@ namespace App\Service\Survey;
 
 use App\Module\Survey\SurveyFileStorage;
 use App\Module\Survey\RequestSurveyLoader;
+use App\Module\Survey\Survey;
 
 class SurveyService implements SurveyServiceInterface
 {
-    private $requestSurveyLoader;
-    private $surveyFileStorage;
+    private RequestSurveyLoader $requestSurveyLoader;
+    private SurveyFileStorage $surveyFileStorage;
 
-    public function __construct()
+    public function __construct(RequestSurveyLoader $requestSurveyLoader, surveyFileStorage $surveyFileStorage)
     {
         $this->requestSurveyLoader = new RequestSurveyLoader();
         $this->surveyFileStorage = new SurveyFileStorage();
@@ -19,27 +20,17 @@ class SurveyService implements SurveyServiceInterface
     public function saveData(): array
     {
         $survey = $this->requestSurveyLoader->createSurveyInfo();
-        $alert = $this->surveyFileStorage->saveSurveyToFile($survey);
-        return
-            [
-                'alert' => $alert,
-                'firstName' => $survey->getFirstName(),
-                'lastName' => $survey->getLastName(),
-                'age' => $survey->getAge(),
-                'email' => $survey->getEmail(),
-            ];
+        $alert = SurveyFileStorage::saveSurveyToFile($survey);
+        $surveyFromFile = $this->surveyFileStorage->loadSurveyFromFile($survey->getEmail());
+        return [
+            'alert' => $alert, 
+            'survey' => $surveyFromFile
+        ];
     }
 
-    public function viewData(): array
+    public function viewData(): Survey
     {
         $survey = $this->requestSurveyLoader->createSurveyInfo();
-        $surveyFromFile = $this->surveyFileStorage->loadSurveyFromFile($survey->getEmail());
-        return
-            [
-                'fileEmail' => $surveyFromFile->getEmail(),
-                'fileFirstName' => $surveyFromFile->getFirstName(),
-                'fileLastName' => $surveyFromFile->getLastName(),
-                'fileAge' => $surveyFromFile->getAge()
-            ];
+        return $this->surveyFileStorage->loadSurveyFromFile($survey->getEmail());
     }
 }

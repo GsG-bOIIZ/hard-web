@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Значения из файла</title>
+    </head>
+    <body>
+        {% if survey.email == null %}
+            <p>File not found</p>
+        {% else %}
+            <p>Email: {{ survey.email }}</p>
+            <p>First Name: {{ survey.firstName }}</p>
+            <p>Last Name: {{ survey.lastName }}</p>
+            <p>Age: {{ survey.age }}</p>
+        {% endif %}
+    </body>
+</html>
