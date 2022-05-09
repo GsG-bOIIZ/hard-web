@@ -9,13 +9,20 @@ use Symfony\Component\HttpFoundation\Response;
 
 class SurveyController extends AbstractController
 {
-    public function saveSurvey(SurveyServiceInterface $action): Response
+    private SurveyServiceInterface $action;
+
+    public function __construct(SurveyServiceInterface $action)
     {
-        return $this->render('save.html.twig', [ 'data' => $action->saveData() ]);
+        $this->action = $action;
+    }    
+
+    public function saveSurvey(): Response
+    {
+        return $this->render('save.html.twig', [ 'data' => $this->action->saveData() ]);
     }
 
-    public function viewSurvey(SurveyServiceInterface $action): Response
+    public function viewSurvey(): Response
     {
-        return $this->render('view.html.twig', [ 'survey' => $action->viewData() ]);
+        return $this->render('view.html.twig', [ 'survey' => $this->action->viewData() ]);
     }
 }
