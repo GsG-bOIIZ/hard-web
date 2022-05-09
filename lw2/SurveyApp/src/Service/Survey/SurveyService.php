@@ -13,8 +13,8 @@ class SurveyService implements SurveyServiceInterface
 
     public function __construct(RequestSurveyLoader $requestSurveyLoader, surveyFileStorage $surveyFileStorage)
     {
-        $this->requestSurveyLoader = new RequestSurveyLoader();
-        $this->surveyFileStorage = new SurveyFileStorage();
+        $this->requestSurveyLoader = $requestSurveyLoader;
+        $this->surveyFileStorage = $surveyFileStorage;
     }
 
     public function saveData(): array
