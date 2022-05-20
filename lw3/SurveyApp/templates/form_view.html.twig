@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Form</title>
+</head>
+<body>
+    <div>
+        {% if survey.email == null %}
+            <p>File not found</p>
+        {% else %}
+            <p>Email: {{ survey.email }}</p>
+            <p>First Name: {{ survey.firstName }}</p>
+            <p>Last Name: {{ survey.lastName }}</p>
+            <p>Age: {{ survey.age }}</p>
+            <p>Avatar: <img src="{{ avatar }}" alt="Not found"> </p>
+        {% endif %}
+    </div>
+</body>
+</html>

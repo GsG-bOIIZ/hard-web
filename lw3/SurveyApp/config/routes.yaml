@@ -1,0 +1,18 @@
+form:
+  path: /form
+  controller: App\Controller\SurveyController::form
+  
+save_form:
+  path: /save-form
+  controller: App\Controller\SurveyController::saveForm
+
+get_form:
+  path: /get-form
+  controller: App\Controller\SurveyController::getForm  
+  
+view_form:
+  path: /view-form
+  controller: App\Controller\SurveyController::viewForm
+
+
+  
