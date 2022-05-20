@@ -18,21 +18,25 @@ class SurveyController extends AbstractController
 
     public function form(): Response
     {
-        return $this->render('form_save.html.twig');
+        return $this->render('form.html.twig');
     }
 
     public function saveForm(): Response
     {
-        return $this->render('save.html.twig', [ 'data' => $this->action->saveData() ]);
+        return $this->render('save_form.html.twig', [ 'data' => $this->action->saveData() ]);
 
     }
 
-    public function viewForm(): Response
+    public function viewUser(): Response
     {
-        return $this->render('form_view.html.twig', [ 'survey' => $this->action->viewData(), 'avatar' =>  $this->action->viewAvatar() ]);
+        return $this->render('view_user.html.twig', 
+            [ 
+                'survey' => $this->action->viewData(), 
+                'avatar' =>  $this->action->viewAvatar() 
+            ]);
     }
 
-    public function getForm(): Response
+    public function getUser(): Response
     {
         return $this->render('view.html.twig');
     }

@@ -6,13 +6,10 @@ save_form:
   path: /save-form
   controller: App\Controller\SurveyController::saveForm
 
-get_form:
-  path: /get-form
-  controller: App\Controller\SurveyController::getForm  
+get_user:
+  path: /get-user
+  controller: App\Controller\SurveyController::getUser  
   
-view_form:
-  path: /view-form
-  controller: App\Controller\SurveyController::viewForm
-
-
-  
+view_user:
+  path: /view-user
+  controller: App\Controller\SurveyController::viewUser

@@ -13,7 +13,7 @@ class PhotoStorage
         $file = $_FILES[$key] ?? null;
         if (($file['error'] === 0) && (in_array($file["type"], self::ARRAY_EXTENSIONS)))
         {            
-            foreach (glob(self::PATH . "$dir/*." . self::EXTENSIONS, GLOB_BRACE) as $filename) 
+            foreach ($this->getAllImages($dir) as $filename) 
             {
                 unlink($filename);
             }
@@ -26,6 +26,11 @@ class PhotoStorage
 
     public function getAvatar(string $dir): ?string
     {
-        return glob(self::PATH . "$dir/*" . self::EXTENSIONS, GLOB_BRACE)[0] ?? null;        
+        return $this->getAllImages($dir) ? $this->getAllImages($dir)[0] : null;        
+    }
+
+    private function getAllImages(string $dir): array
+    {
+        return glob(self::PATH . "$dir/*." . self::EXTENSIONS, GLOB_BRACE);
     }
 }

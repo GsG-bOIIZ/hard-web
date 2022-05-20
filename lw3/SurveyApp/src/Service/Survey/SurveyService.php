@@ -39,6 +39,10 @@ class SurveyService implements SurveyServiceInterface
     public function viewAvatar(): ?string
     {
         $survey = $this->requestSurveyLoader->createSurveyInfo();
-        return $this->photoStorage->getAvatar($survey->getEmail());
+        if ($survey->getEmail())
+        {
+            return $this->photoStorage->getAvatar($survey->getEmail());
+        }
+        return null;        
     }
 }
