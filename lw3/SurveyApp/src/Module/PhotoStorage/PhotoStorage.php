@@ -3,7 +3,6 @@
 namespace App\Module\PhotoStorage;
 
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class PhotoStorage
 {
