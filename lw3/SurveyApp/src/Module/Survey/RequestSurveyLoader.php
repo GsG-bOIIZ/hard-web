@@ -10,19 +10,30 @@ class RequestSurveyLoader
     private const POST_EMAIL = "email";
     private const POST_AGE = "age";
 
+    private Request $request;
+
+    public function __construct()
+    {
+        $this->request = new Request(
+            $_GET,
+            $_POST,
+            [],
+            $_COOKIE,
+            $_FILES,
+            $_SERVER
+        );
+    }
 
     public function createSurveyInfo(): Survey
     {
-        $request = Request::createFromGlobals();
-
-        if ($request->request->get(self::POST_EMAIL) == null)
+        if ($this->request->request->get(self::POST_EMAIL) == null)
         {
             return new Survey(null, null, null, null);
         }
-        $email = $request->request->get(self::POST_EMAIL);
-        $firstName = $request->request->get(self::POST_FIRST_NAME) ?? null;
-        $lastName = $request->request->get(self::POST_LAST_NAME) ?? null;   
-        $age = $request->request->get(self::POST_AGE) ?? null;
+        $email = $this->request->request->get(self::POST_EMAIL);
+        $firstName = $this->request->request->get(self::POST_FIRST_NAME) ?? null;
+        $lastName = $this->request->request->get(self::POST_LAST_NAME) ?? null;   
+        $age = $this->request->request->get(self::POST_AGE) ?? null;
 
         return new Survey($email, $firstName, $lastName, $age);
     }

@@ -10,10 +10,23 @@ class PhotoStorage
     private const EXTENSIONS = '{png,jpg,jpeg}';
     private const ARRAY_EXTENSIONS = ['image/png', 'image/jpg', 'image/jpeg'];
 
+    private Request $request;
+
+    public function __construct()
+    {
+        $this->request = new Request(
+            $_GET,
+            $_POST,
+            [],
+            $_COOKIE,
+            $_FILES,
+            $_SERVER
+        );
+    }
+
     public function saveAvatar(string $key, string $dir): string
-    {        
-        $request = Request::createFromGlobals();
-        $file = $request->files->get($key) ?? null;
+    {
+        $file = $this->request->files->get($key) ?? null;
         if (($file->getError() === 0) && (in_array($file->getClientMimeType(), self::ARRAY_EXTENSIONS)))
         {            
             foreach ($this->getAllImages($dir) as $filename) 
