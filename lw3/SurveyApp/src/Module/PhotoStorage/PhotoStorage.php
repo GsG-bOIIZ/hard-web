@@ -2,6 +2,9 @@
 
 namespace App\Module\PhotoStorage;
 
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+
 class PhotoStorage
 {
     private const PATH = './data/';
@@ -9,16 +12,17 @@ class PhotoStorage
     private const ARRAY_EXTENSIONS = ['image/png', 'image/jpg', 'image/jpeg'];
 
     public function saveAvatar(string $key, string $dir): string
-    {
-        $file = $_FILES[$key] ?? null;
-        if (($file['error'] === 0) && (in_array($file["type"], self::ARRAY_EXTENSIONS)))
+    {        
+        $request = Request::createFromGlobals();
+        $file = $request->files->get($key) ?? null;
+        if (($file->getError() === 0) && (in_array($file->getClientMimeType(), self::ARRAY_EXTENSIONS)))
         {            
             foreach ($this->getAllImages($dir) as $filename) 
             {
                 unlink($filename);
             }
-            $pathFile = self::PATH . "$dir/" . $file['name'];
-            move_uploaded_file($file['tmp_name'], $pathFile);   
+            $pathFile = $this->getPathFile($dir, $file->getClientMimeType());
+            move_uploaded_file($file->getPathName(), $pathFile);   
             return " Avatar saved";
         }
         return " Avatar don't saved";
@@ -32,5 +36,10 @@ class PhotoStorage
     private function getAllImages(string $dir): array
     {
         return glob(self::PATH . "$dir/*." . self::EXTENSIONS, GLOB_BRACE);
+    }
+
+    private function getPathFile(string $dir, string $mimeType): string
+    {
+        return self::PATH . "$dir/" . uniqid() . '.' . explode("/", $mimeType)[1];     
     }
 }

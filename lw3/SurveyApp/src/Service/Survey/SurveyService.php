@@ -25,9 +25,11 @@ class SurveyService implements SurveyServiceInterface
     {
         $survey = $this->requestSurveyLoader->createSurveyInfo();
         $alert = SurveyFileStorage::saveSurveyToFile($survey);
-        $avatar = $this->photoStorage->saveAvatar('avatar', $survey->getEmail());
-        $surveyFromFile = $this->surveyFileStorage->loadSurveyFromFile($survey->getEmail());
-        return [ 'alert' => $alert . $avatar ];
+        if ($survey->getEmail())
+        {
+            return [ 'alert' => $alert . $this->photoStorage->saveAvatar('avatar', $survey->getEmail()) ];
+        }
+        return [ 'alert' => $alert ];
     }
 
     public function viewData(): Survey

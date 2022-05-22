@@ -8,4 +8,5 @@ interface SurveyServiceInterface
 {
     public function saveData(): array;
     public function viewData(): Survey;
+    public function viewAvatar(): ?string;
 }
